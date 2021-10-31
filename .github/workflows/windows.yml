@@ -30,15 +30,6 @@ jobs:
       DEPOT_TOOLS_METRICS: '0'
       PYTHON_HOME: ''
     steps:
-      - name: Discord message (1)
-        shell: pwsh
-        run: |
-          $body = @'
-          {
-            "content": "Starting ANGLE ${{ matrix.variant }} (${{ matrix.cpu }}_${{ matrix.arch }}) job on ${{ matrix.os }}."
-          }
-          '@
-          Invoke-RestMethod -Uri ${{ secrets.DISCORD_WEBHOOK }} -ContentType "application/json" -Method Post -Body $body
       - name: Check out source
         uses: actions/checkout@v1
       - name: Fetch depot_tools
@@ -79,15 +70,6 @@ jobs:
           $env:Path = "$pwd\depot_tools;" + $env:Path
           cd angle
           gn gen out/Build_${{ matrix.arch }} --args='is_clang=true is_debug=false use_custom_libcxx=true is_component_build=false target_cpu=\"${{ matrix.cpu }}\" angle_enable_swiftshader=false'
-      - name: Discord message (2)
-        shell: pwsh
-        run: |
-          $body = @'
-          {
-            "content": "Starting ANGLE ${{ matrix.variant }} (${{ matrix.cpu }}_${{ matrix.arch }}) build on ${{ matrix.os }}."
-          }
-          '@
-          Invoke-RestMethod -Uri ${{ secrets.DISCORD_WEBHOOK }} -ContentType "application/json" -Method Post -Body $body
       - name: Build Angle
         shell: pwsh
         run: |
@@ -97,15 +79,6 @@ jobs:
           autoninja -C out\Build_${{ matrix.arch }} libANGLE
           autoninja -C out\Build_${{ matrix.arch }} libEGL
           autoninja -C out\Build_${{ matrix.arch }} libGLESv2
-      - name: Discord message (3)
-        shell: pwsh
-        run: |
-          $body = @'
-          {
-            "content": "ANGLE ${{ matrix.variant }} (${{ matrix.cpu }}_${{ matrix.arch }}) on ${{ matrix.os }} has been built!"
-          }
-          '@
-          Invoke-RestMethod -Uri ${{ secrets.DISCORD_WEBHOOK }} -ContentType "application/json" -Method Post -Body $body
       - name: Copy Binaries
         shell: pwsh
         run: |
@@ -124,12 +97,3 @@ jobs:
         with:
           name: Angle ${{ matrix.cpu }}_${{ matrix.arch }} Libraries for ${{ matrix.variant }} on ${{ matrix.os }}
           path: Angle.zip
-      - name: Discord message (4)
-        shell: pwsh
-        run: |
-          $body = @'
-          {
-            "content": "ANGLE ${{ matrix.variant }} (${{ matrix.cpu }}_${{ matrix.arch }}) on ${{ matrix.os }} :: Artifacts deployed!"
-          }
-          '@
-          Invoke-RestMethod -Uri ${{ secrets.DISCORD_WEBHOOK }} -ContentType "application/json" -Method Post -Body $body
