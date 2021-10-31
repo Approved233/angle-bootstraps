@@ -1,6 +1,8 @@
 name: Matrixed Windows Build
 
 on: 
+  workflow_dispatch:
+    inputs:
   push:
     branches: 
       - master
