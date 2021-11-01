@@ -50,7 +50,7 @@ jobs:
         shell: pwsh
         run: |
           del C:\ProgramData\Chocolatey\bin\pytho*.exe
-          git clone https://github.com/ppy/angle
+          git clone https://chromium.googlesource.com/angle/angle
           cd angle
       - name: Bootstrap ${{ matrix.variant }} ANGLE dependencies on ${{ matrix.os }}
         shell: pwsh
@@ -76,7 +76,6 @@ jobs:
           $env:Path = "$pwd\depot_tools;" + $env:Path
           &("C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat")
           cd angle
-          autoninja -C out\Build_${{ matrix.arch }} libANGLE
           autoninja -C out\Build_${{ matrix.arch }} libEGL
           autoninja -C out\Build_${{ matrix.arch }} libGLESv2
       - name: Copy Binaries
