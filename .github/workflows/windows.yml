@@ -50,7 +50,7 @@ jobs:
         shell: pwsh
         run: |
           del C:\ProgramData\Chocolatey\bin\pytho*.exe
-          git clone https://chromium.googlesource.com/angle/angle
+          git clone https://github.com/Approved233/angle
           cd angle
       - name: Bootstrap ${{ matrix.variant }} ANGLE dependencies on ${{ matrix.os }}
         shell: pwsh
